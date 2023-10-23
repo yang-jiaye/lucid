@@ -1,0 +1,28 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CC	Makefile	/^CC	= g++$/;"	m
+CFLAGS	Makefile	/^	CFLAGS	= -O2 -D_FORTIFY_SOURCE=0 -g3 -m64 $(CINCPATHFLAGS)$/;"	m
+CINCPATHFLAGS	Makefile	/^CINCPATHFLAGS = -Iincludes\\$/;"	m
+DELTA_TIME	main/main.cpp	35;"	d	file:
+ERASE_LINE	main/main.cpp	17;"	d	file:
+EXE	Makefile	/^EXE =	gps-sdr$/;"	m
+EXPOSURE_TIME	main/main.cpp	38;"	d	file:
+HEADERS	Makefile	/^HEADERS = $(wildcard includes\/*.h)$/;"	m
+LBITS	Makefile	/^LBITS := $(shell getconf LONG_BIT)$/;"	m
+LDFLAGS	Makefile	/^	LDFLAGS = -L$(ARENA_ROOT)\/GenICam\/library\/lib\/Linux64_x64\\$/;"	m
+LIBS	Makefile	/^	LIBS := -lGCBase_gcc54_v3_3_LUCID -lGenApi_gcc54_v3_3_LUCID -larena -lsave -lgentl$/;"	m
+LINK	Makefile	/^LINK= g++$/;"	m
+OBJS	Makefile	/^OBJS = $(SRC:.cpp=.o)$/;"	m
+SKIP	Makefile	/^SKIP = %main.cpp $/;"	m
+SRC	Makefile	/^SRC = $(filter-out $(SKIP), $(SRCC)) $/;"	m
+SRCC	Makefile	/^SRCC = $(wildcard main\/*.cpp src\/*.cpp)$/;"	m
+SynchronizeCamerasAndTriggerImage	main/main.cpp	/^void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Arena::IDevice*>& devices)$/;"	f
+TAB1	main/main.cpp	14;"	d	file:
+TAB2	main/main.cpp	15;"	d	file:
+TAB3	main/main.cpp	16;"	d	file:
+VPATH	Makefile	/^VPATH		=   src:\\$/;"	m
+main	main/main.cpp	/^int main()$/;"	f
