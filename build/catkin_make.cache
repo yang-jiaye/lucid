@@ -1,2 +1,0 @@
-
--DCATKIN_DEVEL_PREFIX=/root/workspace/lucid/devel -DCMAKE_INSTALL_PREFIX=/root/workspace/lucid/install -G Unix Makefiles
