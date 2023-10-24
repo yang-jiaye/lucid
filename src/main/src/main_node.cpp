@@ -5,6 +5,8 @@
 #include "GenApi/GenApi.h"
 //#include "GenApiCustom.h"*/
 
+#include <sensor_msgs/Image.h>
+#include <ros/ros.h>
 
 #include "stdafx.h"
 #include "ArenaApi.h"
@@ -66,7 +68,7 @@
 // (2) prepares devices for action commands
 // (3) synchronizes devices and fire action command
 // (4) retrieves images with synchronized timestamps
-void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Arena::IDevice*>& devices)
+void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Arena::IDevice*>& devices, ros::NodeHandle& nh_)
 {
 	// get node values that will be changed in order to return their values at
 	// the end of the example 
@@ -409,6 +411,10 @@ void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Aren
 		devices.at(i)->StartStream();
 	}
 
+	// img to publish
+	sensor_msgs::Image img_raw_msg_;
+	ros::Publisher img_pub = nh_.advertise<sensor_msgs::Image>("lucid_image", 100);
+
 	for (size_t i = 0; i < 600; i++) // xin: num of images to take
 	{
 		std::cout<<std::endl<<"i = "<<i<<std::endl;
@@ -472,8 +478,25 @@ void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Aren
 					pImage,
 					PIXEL_FORMAT);
 			
-			// save image
-			writers.at(i) << pConverted->GetData();
+			// // save image
+			// writers.at(i) << pConverted->GetData();
+
+			// Yang Jiaye 20231024
+			// Publish Image topic here
+
+			img_raw_msg_.header.frame_id = "world";
+			// Encoding of pixels -- channel meaning, ordering, size
+			// taken from the list of strings in include/sensor_msgs/image_encodings.h
+			img_raw_msg_.encoding = "bgr8";
+			img_raw_msg_.height = pConverted->GetHeight();
+			img_raw_msg_.width = pConverted->GetWidth();
+			// step = full row length in bytes, img_size = (step * rows), imagePixelDepth
+			// already contains the number of channels
+			img_raw_msg_.step = img_raw_msg_.width * (pConverted->GetBitsPerPixel() / 8);
+			img_raw_msg_.data.resize(img_raw_msg_.height * img_raw_msg_.step);
+			memcpy(&img_raw_msg_.data[0], pConverted->GetData(), img_raw_msg_.height * img_raw_msg_.step);
+			img_raw_msg_.header.stamp = ros::Time::now();
+			img_pub.publish(img_raw_msg_);
 
 			// Get last file name
 			//    The image writer allows for the retrieval of paths, file names, and
@@ -542,7 +565,7 @@ void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Aren
 // =- & CLEAN UP =-=-
 // =-=-=-=-=-=-=-=-=-
 
-int main()
+int main(int argc, char** argv)
 {
 	//flag to track when an exception has been thrown
 	bool exceptionThrown = false;
@@ -553,6 +576,9 @@ int main()
 	std::cout << "Example may overwrite 'ActionDeviceKey' -- proceed? ('y' to continue) ";
 	char continueExample = 'a';
 	std::cin >> continueExample;
+
+	ros::init(argc, argv, "main_node");
+	ros::NodeHandle nh_;
 
 	if (continueExample == 'y')
 	{
@@ -586,7 +612,7 @@ int main()
 
 			// run example
 			std::cout << "\nCommence example\n\n";
-			SynchronizeCamerasAndTriggerImage(pSystem, devices);
+			SynchronizeCamerasAndTriggerImage(pSystem, devices, nh_);
 			std::cout << "\nExample complete\n";
 
 			// clean up example
