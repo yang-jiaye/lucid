@@ -35,7 +35,7 @@
 
 
 // delta time (ns)
-#define DELTA_TIME 1000000000
+#define DELTA_TIME 100000000
 
 // exposure time
 //#define EXPOSURE_TIME 500.0 //in milliseconds
@@ -54,7 +54,7 @@
 
 
 // pixel format//xin: Cpp_Save_FileNamePattern
-//#define PIXEL_FORMAT RGB24
+// #define PIXEL_FORMAT RGB24
 //#define PIXEL_FORMAT BayerRG8
 #define PIXEL_FORMAT BGR8
 
@@ -413,9 +413,10 @@ void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Aren
 
 	// img to publish
 	sensor_msgs::Image img_raw_msg_;
-	ros::Publisher img_pub = nh_.advertise<sensor_msgs::Image>("lucid_image", 100);
+	ros::Publisher img_pub_0 = nh_.advertise<sensor_msgs::Image>("lucid_image0", 100);
+	ros::Publisher img_pub_1 = nh_.advertise<sensor_msgs::Image>("lucid_image1", 100);
 
-	for (size_t i = 0; i < 600; i++) // xin: num of images to take
+	for (size_t i = 0; i < 600000; i++) // xin: num of images to take
 	{
 		std::cout<<std::endl<<"i = "<<i<<std::endl;
 		// Set up timing and broadcast action command
@@ -451,7 +452,10 @@ void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Aren
 
 		// get images and check timestamps
 		std::cout << TAB1 << "Get images\n";
-		for (size_t i = 0; i < devices.size(); i++)
+		
+		// Only show one camera Yang 20231024
+		// Show both cameras Yang 20231129
+		for (size_t i = 0; i < 2; i++)
 		{
 			Arena::IDevice* pDevice = devices.at(i);
 			GenICam::gcstring deviceSerialNumber = Arena::GetNodeValue<GenICam::gcstring>(pDevice->GetNodeMap(), "DeviceSerialNumber");
@@ -487,6 +491,7 @@ void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Aren
 			img_raw_msg_.header.frame_id = "world";
 			// Encoding of pixels -- channel meaning, ordering, size
 			// taken from the list of strings in include/sensor_msgs/image_encodings.h
+			// img_raw_msg_.encoding = "rgb24";
 			img_raw_msg_.encoding = "bgr8";
 			img_raw_msg_.height = pConverted->GetHeight();
 			img_raw_msg_.width = pConverted->GetWidth();
@@ -496,8 +501,11 @@ void SynchronizeCamerasAndTriggerImage(Arena::ISystem* pSystem, std::vector<Aren
 			img_raw_msg_.data.resize(img_raw_msg_.height * img_raw_msg_.step);
 			memcpy(&img_raw_msg_.data[0], pConverted->GetData(), img_raw_msg_.height * img_raw_msg_.step);
 			img_raw_msg_.header.stamp = ros::Time::now();
-			img_pub.publish(img_raw_msg_);
 
+			if(i == 0)
+				img_pub_0.publish(img_raw_msg_);
+			else
+				img_pub_1.publish(img_raw_msg_);
 			// Get last file name
 			//    The image writer allows for the retrieval of paths, file names, and
 			//    extensions. They can be retrieved together or separately, and it is
