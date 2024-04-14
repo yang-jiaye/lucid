@@ -114,11 +114,12 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
+set(ARENA_ROOT "~/Workspace/Archive/ArenaSDK_Linux_x64")
 include_directories(
   include
-  ~/Workspace/ArenaSDK_Linux_x64/include/Arena
-  ~/Workspace/ArenaSDK_Linux_x64/include/Save
-  ~/Workspace/ArenaSDK_Linux_x64/GenICam/library/CPP/include
+  ${ARENA_ROOT}/include/Arena
+  ${ARENA_ROOT}/include/Save
+  ${ARENA_ROOT}/GenICam/library/CPP/include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -147,12 +148,10 @@ add_executable(${PROJECT_NAME}_node src/main_node.cpp)
 ## same as for the library above
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-set(ARENA_ROOT "~/Workspace/ArenaSDK_Linux_x64")
-
 target_link_directories(${PROJECT_NAME}_node
-  PUBLIC ~/Workspace/ArenaSDK_Linux_x64/GenICam/library/lib/Linux64_x64
-  PUBLIC ~/Workspace/ArenaSDK_Linux_x64/lib64
-  PUBLIC ~/Workspace/ArenaSDK_Linux_x64/ffmpeg
+  PUBLIC ${ARENA_ROOT}/GenICam/library/lib/Linux64_x64
+  PUBLIC ${ARENA_ROOT}/lib64
+  PUBLIC ${ARENA_ROOT}/ffmpeg
 )
 
 ## Specify libraries to link a library or executable target against
