@@ -6,9 +6,9 @@ LINK= g++
 CINCPATHFLAGS = -Iincludes\
 				-Imain\
 				-Isrc\
-                -I/root/workspace/ArenaSDK_Linux_x64/include/Arena\
-                -I/root/workspace/ArenaSDK_Linux_x64/include/Save\
-				-I/root/workspace/ArenaSDK_Linux_x64/GenICam/library/CPP/include\
+                -I/home/ackerman/Workspace/Archive/ArenaSDK_Linux_x64/include/Arena\
+                -I/home/ackerman/Workspace/Archive/ArenaSDK_Linux_x64/include/Save\
+				-I/home/ackerman/Workspace/Archive/ArenaSDK_Linux_x64/GenICam/library/CPP/include\
 
 
 
