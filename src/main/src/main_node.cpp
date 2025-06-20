@@ -38,8 +38,8 @@
 #define DELTA_TIME 100000000
 
 // exposure time
-//#define EXPOSURE_TIME 500.0 //in milliseconds
-#define EXPOSURE_TIME 21661.5 //in milliseconds//xin 2023-9-4 : from Window's ArenaView
+#define EXPOSURE_TIME 500.0 //in milliseconds
+// #define EXPOSURE_TIME 21661.5 //in milliseconds//xin 2023-9-4 : from Window's ArenaView
 
 
 // File name pattern
